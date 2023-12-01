@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using TaskManager.Core.DTO_s.User;
+@using TaskManager.Core.Entities.User;
+@inject UserManager<AppUser> UserManager;
+@model EditUserDto
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var email = await UserManager.GetEmailAsync(user);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg  bg-dark">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-lg-0 logotext" asp-action="Index">
+                Task Manager
+            </a>
+
+        </div>
+        <!-- Collapsible wrapper -->
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+            <!-- Icon -->
+            <a class="text-reset me-3" href="#">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+            <!-- Avatar -->
+
+            <a asp-action="Profile" asp-route-id="@user.Id" class="btn btn-outline-primary m-1">Profile</a>
+            <a asp-action="Logout" class="btn btn-outline-primary m-1">Log Out</a>
+        </div>
+        <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+<div class="container-xl px-4 mt-4">
+    <!-- Account page navigation-->
+    <hr class="mt-0 mb-4">
+    <div class="row">
+        <div class="col-xl-4">
+            <!-- Profile picture card-->
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Profile Picture</div>
+                <div class="card-body text-center">
+                    <!-- Profile picture image-->
+                    <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                    <!-- Profile picture help block-->
+                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                    <!-- Profile picture upload button-->
+                    <button class="btn btn-primary" type="button">Upload new image</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                    <form method="post" asp-action="Index">
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="small mb-1">First name</label>
+                                <input class="form-control" asp-for="@Model.FirstName" name="FirstName" type="text" placeholder="Enter your first name">
+                            </div>
+                            <!-- Form Group (last name)-->
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="small mb-1">Last name</label>
+                                <input class="form-control" asp-for="@Model.LastName" name="LastName" type="text" placeholder="Enter your last name">
+                            </div>
+                        </div>
+                        <!-- Save changes button-->
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Reset Password</div>
+                <div class="card-body">
+                    @if (@ViewBag.UpdatePasswordError != null)
+                    {
+                        <span class="text-danger mt-3">@ViewBag.UpdatePasswordError</span>
+                    }
+                    <form method="post" asp-controller="Dashboard" asp-action="UpdatePassword">
+                        <!-- Form Group (username)-->
+                        <input type="hidden" name="Id" asp-for="@Model.Id" value=@Model.Id />
+                        <div class="mb-3">
+
+                            <label class="small mb-1" for="Password">Old Password</label>
+                            <input asp-for="@Model.OldPassword" name="oldPassword" class="form-control"  type="password" placeholder="Enter old password">
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="Password">New Password</label>
+                            <input asp-for="@Model.Password" name="Password" class="form-control"  type="password" placeholder="Enter new password">
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="ConfirmPassword">Confirm Password</label>
+                            <input asp-for="@Model.ConfirmPassword" name="confirmPassword" class="form-control" type="password" placeholder="Enter confirm password">
+                        </div>
+                        <!-- Save changes button-->
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

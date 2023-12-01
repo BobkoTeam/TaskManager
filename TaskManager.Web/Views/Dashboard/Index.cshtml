@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using TaskManager.Core.DTO_s.Post;
+@using TaskManager.Core.Entities.User;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@using X.PagedList;
+@model IPagedList<PostDto>
+@inject UserManager<AppUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var email = await UserManager.GetEmailAsync(user);
+}
+
+
+
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg  bg-dark">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand mt-2 mt-lg-0 logotext" asp-action="Index">
+                Task Manager
+            </a>
+
+        </div>
+        <!-- Collapsible wrapper -->
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+            <!-- Icon -->
+            <a class="text-reset me-3" href="#">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+            <!-- Avatar -->
+
+            
+            
+            <a asp-action="Profile" asp-route-id="@user.Id" class="btn btn-outline-primary m-1">Profile</a>
+            <a asp-action="Logout" class="btn btn-outline-primary m-1">Log Out</a>
+        </div>
+        <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+
+<div class="container mt-3">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card card-just-text" data-background="color" data-color="blue" data-radius="none">
+                    <div class="p-1 content d-flex flex-column">
+                        <h4 class=" category">@item.Name</h4>
+                        <p class=" mt-2 description">@item.Description</p>
+                        <p class="mt-5 text-end">"Deadline @item.Date"</p>
+                        <a asp-action="DeleteById" asp-route-id="@item.Id" class="btn btn-success">Done</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+<a asp-action="AddTask" id="fixedButton" class="btn btn-primary rounded-circle">
+    <img class="addImg" src="/img/plus.svg" />
+</a>
+
+
